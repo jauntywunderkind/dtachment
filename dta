@@ -1,3 +1,40 @@
+# autocomplete dta
 _dta() { _files -/ -W ~/${SRC:-src} }
 compdef _dta dta
-dta() { dtach -A ~/${SRC:-src}/.dtach ${EDITOR:-vim} $(fgv) }
+
+# script
+dta() {
+	# find dir
+	dest="~/${SRC:-src}/$1"
+	# accept wildcard too
+	if [ -a "$dest" ]
+	then
+		# wildcard
+ 		dest="${dest}*"
+		# expand
+		dest=$(echo ${~dest})
+	fi
+
+	# abort if we don't have a destination
+	if [ -d "$dest" ]
+	then
+		return
+	fi
+
+	# try to connect
+	dtach -a $dest/.dtach
+
+	# find files
+	_tmp_fgv=""
+	if ! type "fgv" > /dev/null
+	then
+		__tmp_fgv=$(cd $dest; fgv)
+	fi
+
+	# create new dtach session
+	pushd .
+	cd $dest
+	dtach -n $dest/.dtach ${EDITOR:-vim} $__tmp_fgv
+	popd .
+	dtach -a $dest/.dtach
+}
