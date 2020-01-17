@@ -1,0 +1,3 @@
+_dta() { _files -/ -W ~/${SRC:-src} }
+compdef _dta dta
+dta() { dtach -A ~/${SRC:-src}/.dtach ${EDITOR:-vim} $(fgv) }
