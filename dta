@@ -33,10 +33,10 @@ dta() { # script
 	if type "fgv" > /dev/null
 	then
 		cd "$dest"
-		while IFS=  read -r -d $'\0'
+		while IFS= read -r
 		do
 			__tmp_fgv+=("$REPLY")
-		done < <(fgv "" -print0)
+		done < <(fgv)
 	fi
 
 	# create, unattached
