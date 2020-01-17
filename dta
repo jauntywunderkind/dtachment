@@ -1,13 +1,8 @@
-# autocomplete dta
-_dta() { _files -/ -W ~/${SRC:-src} }
-compdef _dta dta
-
-# script
-dta() {
+dta() { # script
 	# find dir
 	dest="~/${SRC:-src}/$1"
 	# accept wildcard too
-	if [ -a "$dest" ]
+	if [ ! -a "$dest" ]
 	then
 		# wildcard
  		dest="${dest}*"
@@ -16,7 +11,7 @@ dta() {
 	fi
 
 	# abort if we don't have a destination
-	if [ -d "$dest" ]
+	if [ ! -d "$dest" ]
 	then
 		return
 	fi
@@ -38,3 +33,7 @@ dta() {
 	popd .
 	dtach -a $dest/.dtach
 }
+
+# autocomplete dta
+_dta() { _files -/ -W ~/${SRC:-src} }
+compdef _dta dta
