@@ -1,6 +1,6 @@
 dta() { # script
 	# find dir
-	dest="~/${SRC:-src}/$1"
+	local dest="~/${SRC:-src}/$1"
 	# accept wildcard too
 	if [ ! -a "$dest" ]
 	then
@@ -17,20 +17,34 @@ dta() { # script
 	fi
 
 	# try to connect
-	dtach -a $dest/.dtach
-
-	# find files
-	_tmp_fgv=""
-	if ! type "fgv" > /dev/null
+	if [ -a "$dest/.dtach" ]
 	then
-		__tmp_fgv=$(cd $dest; fgv)
+		dtach -a $dest/.dtach
+		return
 	fi
 
-	# create new dtach session
-	pushd .
-	cd $dest
-	dtach -n $dest/.dtach ${EDITOR:-vim} $__tmp_fgv
-	popd .
+	# save dir
+	local cwd="$(pwd)"
+	# switch to dest
+	cd "$dest"
+
+	# find files
+	local __tmp_fgv=()
+	if type "fgv" > /dev/null
+	then
+		cd "$dest"
+		while IFS=  read -r -d $'\0'
+		do
+			__tmp_fgv+=("$REPLY")
+		done < <(fgv "" -print0)
+	fi
+
+	# create, unattached
+	dtach -n $dest/.dtach ${EDITOR:-vim} ${__tmp_fgv[@]}
+
+	# restore dir
+	cd "$cwd"
+	# attach
 	dtach -a $dest/.dtach
 }
 
