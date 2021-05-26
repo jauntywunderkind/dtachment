@@ -17,7 +17,7 @@ dta() { # script
 	fi
 
 	# try to connect
-	if [ -a "$dest/.dtach" ]
+	if [[ -a "$dest/.dtach" ]]
 	then
 		dtach -a $dest/.dtach
 		return
@@ -29,18 +29,18 @@ dta() { # script
 	cd "$dest"
 
 	# find files
-	local __tmp_fgv=()
-	if type "fgv" > /dev/null
+	local __tmp_files=()
+	if type fd > /dev/null
 	then
 		cd "$dest"
 		while IFS= read -r
 		do
-			__tmp_fgv+=("$REPLY")
-		done < <(fgv)
+			__tmp_files+=("$REPLY")
+		done < <(fd -tf)
 	fi
 
 	# create, unattached
-	dtach -n $dest/.dtach ${EDITOR:-vim} ${__tmp_fgv[@]}
+	dtach -n $dest/.dtach ${EDITOR:-vim} ${__tmp_files[@]}
 
 	# restore dir
 	cd "$cwd"
