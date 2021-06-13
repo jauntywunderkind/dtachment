@@ -1,0 +1,21 @@
+{
+	"name": "dtachment",
+	"version": "1.0.0",
+	"description": "quickly lauNCH $EDITOR inside dtach with all files in a directory",
+	"main": "index.js",
+	"scripts": {
+		"install": "echo source $(pwd)/dta >> ~/.zshrc",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://jauntywunderkind@github.com/jauntywunderkind/dtachment.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/jauntywunderkind/dtachment/issues"
+	},
+	"homepage": "https://github.com/jauntywunderkind/dtachment#readme"
+}
