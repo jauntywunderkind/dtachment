@@ -1,6 +1,6 @@
 dta() { # script
 	# find dir
-	local dest="~/${SRC:-src}/$1"
+	local dest="~/${PROJECTS_DIR:-src}/$1"
 	# accept wildcard too
 	if [ ! -a "$dest" ]
 	then
@@ -49,5 +49,5 @@ dta() { # script
 }
 
 # autocomplete dta
-_dta() { _files -/ -W ~/${SRC:-src} }
+_dta() { _files -/ -W ~/${PROJECTS_DIR:-src} }
 compdef _dta dta
